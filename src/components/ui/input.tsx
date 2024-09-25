@@ -1,14 +1,13 @@
 import * as React from "react";
+
 import { cn } from "@/lib/utils";
 
-// Define InputProps interface that adds no new members
-// but retains the structure for extending input HTML attributes
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  // You can add any custom props here if needed in the future
-}
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {}
 
+// The Input component defined with React.forwardRef for better compatibility
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type = "text", ...props }, ref) => {
+  ({ className, type, ...props }, ref) => {
     return (
       <input
         type={type}
@@ -22,8 +21,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     );
   }
 );
-
-// Set the display name for debugging purposes
 Input.displayName = "Input";
 
 export { Input };
