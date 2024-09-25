@@ -31,22 +31,14 @@ type ExchangeRates = {
 type Currency = "USD" | "EUR" | "GBP" | "JPY" | "AUD" | "CAD" | "PKR";
 
 export default function CurrencyConverter() {
-  // State to manage the amount input by the user
   const [amount, setAmount] = useState<number | null>(null);
-  // State to manage the source currency selected by the user
   const [sourceCurrency, setSourceCurrency] = useState<Currency>("USD");
-  // State to manage the target currency selected by the user
   const [targetCurrency, setTargetCurrency] = useState<Currency>("PKR");
-  // State to manage the fetched exchange rates
   const [exchangeRates, setExchangeRates] = useState<ExchangeRates>({});
-  // State to manage the converted amount
   const [convertedAmount, setConvertedAmount] = useState<string>("0.00");
-  // State to manage the loading state during data fetch
   const [loading, setLoading] = useState<boolean>(false);
-  // State to manage any error messages
   const [error, setError] = useState<string | null>(null);
 
-  // useEffect to fetch exchange rates when the component mounts
   useEffect(() => {
     const fetchExchangeRates = async () => {
       setLoading(true);
@@ -66,24 +58,20 @@ export default function CurrencyConverter() {
     fetchExchangeRates();
   }, []);
 
-  // Function to handle changes in the amount input field
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setAmount(parseFloat(e.target.value));
   };
 
-  // Function to handle changes in the source currency select field
   const handleSourceCurrencyChange = (value: Currency): void => {
     setSourceCurrency(value);
   };
 
-  // Function to handle changes in the target currency select field
   const handleTargetCurrencyChange = (value: Currency): void => {
     setTargetCurrency(value);
   };
 
-  // Function to calculate the converted amount
   const calculateConvertedAmount = (): void => {
-    if (sourceCurrency && targetCurrency && amount && exchangeRates) {
+    if (sourceCurrency && targetCurrency && amount != null && exchangeRates) {
       const rate =
         sourceCurrency === "USD"
           ? exchangeRates[targetCurrency]
@@ -96,96 +84,96 @@ export default function CurrencyConverter() {
   // JSX return statement rendering the Currency Converter UI
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-blue-900 to-blue-700">
-  <Card className="w-full max-w-md p-6 space-y-4 shadow-lg rounded-lg bg-white bg-opacity-90">
-    <CardHeader className="text-center">
-      <CardTitle className="text-3xl font-bold text-gray-800">
-        Currency Converter
-      </CardTitle>
-      <CardDescription className="text-gray-600">
-        Effortlessly convert between different currencies.
-      </CardDescription>
-    </CardHeader>
-    <CardContent>
-      {loading ? (
-        <div className="flex justify-center">
-          <ClipLoader className="w-6 h-6 text-blue-500" />
-        </div>
-      ) : error ? (
-        <div className="text-red-500 text-center">{error}</div>
-      ) : (
-        <div className="grid gap-6">
-          {/* Amount input and source currency selection */}
-          <div className="grid grid-cols-[1fr_auto] items-center gap-2">
-            <Label htmlFor="from" className="text-gray-700">From</Label>
-            <div className="grid grid-cols-[1fr_auto] items-center gap-2">
-              <Input
-                type="number"
-                placeholder="Amount"
-                value={amount || ""}
-                onChange={handleAmountChange}
-                className="w-full border border-gray-300 rounded-lg p-2 shadow-sm"
-                id="from"
-              />
-              <Select
-                value={sourceCurrency}
-                onValueChange={handleSourceCurrencyChange}
-              >
-                <SelectTrigger className="w-24 border border-gray-300 rounded-lg p-2 shadow-sm">
-                  <SelectValue placeholder="USD" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="USD">USD</SelectItem>
-                    <SelectItem value="EUR">EUR</SelectItem>
-                    <SelectItem value="GBP">GBP</SelectItem>
-                    <SelectItem value="JPY">JPY</SelectItem>
-                    <SelectItem value="AUD">AUD</SelectItem>
-                    <SelectItem value="CAD">CAD</SelectItem>
-                    <SelectItem value="PKR">PKR</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+      <Card className="w-full max-w-md p-6 space-y-4 shadow-lg rounded-lg bg-white bg-opacity-90">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl font-bold text-gray-800">
+            Currency Converter
+          </CardTitle>
+          <CardDescription className="text-gray-600">
+            Effortlessly convert between different currencies.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {loading ? (
+            <div className="flex justify-center">
+              <ClipLoader className="w-6 h-6 text-blue-500" />
             </div>
-          </div>
-          {/* Converted amount display and target currency selection */}
-          <div className="grid grid-cols-[1fr_auto] items-center gap-2">
-            <Label htmlFor="to" className="text-gray-700">To</Label>
-            <div className="grid grid-cols-[1fr_auto] items-center gap-2">
-              <div className="text-2xl font-bold text-gray-800">{convertedAmount}</div>
-              <Select
-                value={targetCurrency}
-                onValueChange={handleTargetCurrencyChange}
-              >
-                <SelectTrigger className="w-24 border border-gray-300 rounded-lg p-2 shadow-sm">
-                  <SelectValue placeholder="EUR" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="USD">USD</SelectItem>
-                    <SelectItem value="EUR">EUR</SelectItem>
-                    <SelectItem value="GBP">GBP</SelectItem>
-                    <SelectItem value="JPY">JPY</SelectItem>
-                    <SelectItem value="AUD">AUD</SelectItem>
-                    <SelectItem value="CAD">CAD</SelectItem>
-                    <SelectItem value="PKR">PKR</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+          ) : error ? (
+            <div className="text-red-500 text-center">{error}</div>
+          ) : (
+            <div className="grid gap-6">
+              {/* Amount input and source currency selection */}
+              <div className="grid grid-cols-[1fr_auto] items-center gap-2">
+                <Label htmlFor="from" className="text-gray-700">From</Label>
+                <div className="grid grid-cols-[1fr_auto] items-center gap-2">
+                  <Input
+                    type="number"
+                    placeholder="Amount"
+                    value={amount || ""}
+                    onChange={handleAmountChange}
+                    className="w-full border border-gray-300 rounded-lg p-2 shadow-sm"
+                    id="from"
+                  />
+                  <Select
+                    value={sourceCurrency}
+                    onValueChange={handleSourceCurrencyChange}
+                  >
+                    <SelectTrigger className="w-24 border border-gray-300 rounded-lg p-2 shadow-sm">
+                      <SelectValue placeholder={sourceCurrency} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="USD">USD</SelectItem>
+                        <SelectItem value="EUR">EUR</SelectItem>
+                        <SelectItem value="GBP">GBP</SelectItem>
+                        <SelectItem value="JPY">JPY</SelectItem>
+                        <SelectItem value="AUD">AUD</SelectItem>
+                        <SelectItem value="CAD">CAD</SelectItem>
+                        <SelectItem value="PKR">PKR</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              {/* Converted amount display and target currency selection */}
+              <div className="grid grid-cols-[1fr_auto] items-center gap-2">
+                <Label htmlFor="to" className="text-gray-700">To</Label>
+                <div className="grid grid-cols-[1fr_auto] items-center gap-2">
+                  <div className="text-2xl font-bold text-gray-800">{convertedAmount}</div>
+                  <Select
+                    value={targetCurrency}
+                    onValueChange={handleTargetCurrencyChange}
+                  >
+                    <SelectTrigger className="w-24 border border-gray-300 rounded-lg p-2 shadow-sm">
+                      <SelectValue placeholder={targetCurrency} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="USD">USD</SelectItem>
+                        <SelectItem value="EUR">EUR</SelectItem>
+                        <SelectItem value="GBP">GBP</SelectItem>
+                        <SelectItem value="JPY">JPY</SelectItem>
+                        <SelectItem value="AUD">AUD</SelectItem>
+                        <SelectItem value="CAD">CAD</SelectItem>
+                        <SelectItem value="PKR">PKR</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
-    </CardContent>
-    <CardFooter>
-      <Button
-        type="button"
-        className="w-full bg-blue-800 text-white hover:bg-blue-600 rounded-lg shadow-md"
-        onClick={calculateConvertedAmount}
-      >
-        Convert
-      </Button>
-    </CardFooter>
-  </Card>
-</div>
+          )}
+        </CardContent>
+        <CardFooter>
+          <Button
+            type="button"
+            className="w-full bg-blue-800 text-white hover:bg-blue-600 rounded-lg shadow-md"
+            onClick={calculateConvertedAmount}
+          >
+            Convert
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
   );
 }
